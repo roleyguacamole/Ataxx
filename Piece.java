@@ -3,17 +3,25 @@ public class Piece {
 	
 	private java.awt.geom.Ellipse2D.Double _circle;
 	private java.awt.Color _pieceColor;
-	private boolean _isPlayers;
+	private java.awt.Color _otherColor;
+	private boolean _isPlayer0;
 	
-	public Piece(java.awt.Color aColor , boolean players , int x , int y) {
-		_pieceColor = aColor;
-		_isPlayers = players;
-		this.SetCell(x , y);
+	public Piece(boolean players , int row , int col) {
+		if(players) {
+			_pieceColor = AtaxxConstants.player0Color;
+			_otherColor = AtaxxConstants.player1Color;
+		}
+		else {
+			_pieceColor = AtaxxConstants.player1Color;
+			_otherColor = AtaxxConstants.player0Color;
+		}
+		_isPlayer0 = players;
+		this.SetCell(row , col);
 	}
 	
-	public void SetCell(int x , int y) {
-		float newX = AtaxxConstants.cellWidth * x;
-		float newY = AtaxxConstants.cellHeight * y;
+	public void SetCell(int row , int col) {
+		float newX = AtaxxConstants.cellWidth * col;
+		float newY = AtaxxConstants.cellHeight * row;
 		this.SetLocation(newX , newY);
 	}
 	
@@ -21,13 +29,15 @@ public class Piece {
 		_circle = new java.awt.geom.Ellipse2D.Double(x + 0.5 , y + 0.5 , AtaxxConstants.cellWidth - 1 , AtaxxConstants.cellHeight - 1);
 	}
 	
-	public void ChangeColor(java.awt.Color aColor) {
-		_pieceColor = aColor;
-		_isPlayers = !_isPlayers;
+	public void ChangeColor() {
+		java.awt.Color temp = _pieceColor;
+		_pieceColor = _otherColor;
+		_otherColor = temp;
+		_isPlayer0 = !_isPlayer0;
 	}
 	
 	public boolean IsPlayers() {
-		return _isPlayers;
+		return _isPlayer0;
 	}
 	
 	public void DrawAndFill(java.awt.Graphics2D betterBrush) {

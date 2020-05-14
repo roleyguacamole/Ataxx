@@ -11,6 +11,7 @@ public class AtaxxApp extends javax.swing.JFrame {
 		this.setSize(AtaxxConstants.screenWidth , AtaxxConstants.screenHeight);
 		this.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
 		this.add(_ataxxPanel);
+		this.pack();
 		this.setVisible(true);
 	}
 	
