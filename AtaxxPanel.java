@@ -6,7 +6,9 @@ public class AtaxxPanel extends javax.swing.JPanel {
 	private int _selectedRow;
 	private int _selectedCol;
 	private boolean _player0Turn;
-	private MouseListener _listener;
+	private MouseListener _mListener;
+	private Reset _reset;
+	private SimpleAI _player1;
 	
 	public AtaxxPanel() {
 		this.setBackground(java.awt.Color.BLACK);
@@ -14,8 +16,12 @@ public class AtaxxPanel extends javax.swing.JPanel {
 		_board = new Board();
 		_pieceSelected = false;
 		_player0Turn = true;
-		_listener = new MouseListener();
-		this.addMouseListener(_listener);
+		_mListener = new MouseListener();
+		_player1 = new SimpleAI();
+		this.addMouseListener(_mListener);
+		_reset = new Reset();
+		this.getInputMap().put(javax.swing.KeyStroke.getKeyStroke("R"), "reset");
+		this.getActionMap().put("reset", _reset);
 	}
 	
 	public void paintComponent(java.awt.Graphics aBrush) {
@@ -38,29 +44,46 @@ public class AtaxxPanel extends javax.swing.JPanel {
 		}
 		
 		public void mousePressed(java.awt.event.MouseEvent e) {
-			int row = e.getY() / AtaxxConstants.cellHeight;
-			int col = e.getX() / AtaxxConstants.cellWidth;
-			if(_board.IsPlayers(_player0Turn, row, col)) {
-				_pieceSelected = true;
-				_selectedRow = row;
-				_selectedCol = col;
-			}
-			else if(_pieceSelected) {
-				if(IsValidAdd(row , col)) {
-					_board.AddPiece(row , col , _player0Turn);
-					_pieceSelected = false;
-					_player0Turn = !_player0Turn;
+			if(_player0Turn) {
+				int row = e.getY() / AtaxxConstants.cellHeight;
+				int col = e.getX() / AtaxxConstants.cellWidth;
+				if(_board.IsPlayers(_player0Turn, row, col)) {
+					_pieceSelected = true;
+					_selectedRow = row;
+					_selectedCol = col;
 				}
-				else if(IsValidMove(row , col)) {
-					_board.MovePiece(_selectedRow , _selectedCol , row , col);
-					_pieceSelected = false;
-					_player0Turn = !_player0Turn;
-				}
-				else {
-					_pieceSelected = false;
+				else if(_pieceSelected) {
+					if(IsValidAdd(row , col)) {
+						_board.AddPiece(row , col , _player0Turn);
+						_pieceSelected = false;
+						repaint();
+						_player1.move(_board , false);
+					}
+					else if(IsValidMove(row , col)) {
+						_board.MovePiece(_selectedRow , _selectedCol , row , col);
+						_pieceSelected = false;
+						repaint();
+						_player1.move(_board , false);
+					}
+					else {
+						_pieceSelected = false;
+					}
 				}
 			}
 			
+			repaint();
+		}
+	}
+	
+	private class Reset extends javax.swing.AbstractAction{
+		public Reset() {
+			super();
+		}
+		
+		public void actionPerformed(java.awt.event.ActionEvent e) {
+			_board = new Board();
+			_pieceSelected = false;
+			_player0Turn = true;
 			repaint();
 		}
 	}

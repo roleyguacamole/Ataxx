@@ -19,6 +19,20 @@ public class Board {
 		_pieces[6][0] = new Piece(false , 6 , 0);
 	}
 	
+	private Board(Piece[][] pieces) {
+		_grid = new Square[7][7];
+		_pieces = new Piece[7][7];
+		for(int i = 0; i < 7; i++) {
+			for(int j = 0; j < 7; j++) {
+				_pieces[i][j] = null;
+				_grid[i][j] = new Square(i , j);
+				if(pieces[i][j] != null) {
+					_pieces[i][j] = new Piece(pieces[i][j].IsPlayers(), i , j);
+				}
+			}
+		}
+	}
+	
 	public void DrawAndFill(java.awt.Graphics2D betterBrush) {
 		for(int i = 0; i < 7; i++) {
 			for(int j = 0; j < 7; j++) {
@@ -70,6 +84,11 @@ public class Board {
 				}
 			}
 		}
+	}
+	
+	public Board Copy() {
+		Board toReturn = new Board(_pieces);
+		return toReturn;
 	}
 }
 
