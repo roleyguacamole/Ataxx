@@ -66,7 +66,7 @@ public class SimpleAI {
 										newMove[2] = newRow;
 										newMove[3] = newCol;
 										canMove = true;
-										move = false;
+										move = true;
 									}
 								}
 							}
