@@ -7,8 +7,8 @@ public class AtaxxApp extends javax.swing.JFrame {
 		super("Ataxx");
 		this.setResizable(false);
 		_ataxxPanel = new AtaxxPanel();
-		_ataxxPanel.setPreferredSize(new java.awt.Dimension(AtaxxConstants.screenWidth , AtaxxConstants.screenHeight));
-		this.setSize(AtaxxConstants.screenWidth , AtaxxConstants.screenHeight);
+		_ataxxPanel.setPreferredSize(new java.awt.Dimension(AtaxxConstants.screenWidth , AtaxxConstants.screenHeight + 30));
+		this.setSize(AtaxxConstants.screenWidth , AtaxxConstants.screenHeight + 30);
 		this.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
 		this.add(_ataxxPanel);
 		this.pack();
